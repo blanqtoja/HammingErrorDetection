@@ -1,4 +1,4 @@
-/*
+
 //
 // Created by olek1 on 26/03/2025.
 //
@@ -6,45 +6,21 @@
 #include "singleErrorDetection.h"
 #include <iostream>
 
-void singleErrorDetection(std::vector<bool> message) {
-    //korekcja jednego bledu
-    //    2^k >= m+k+1
 
-    // dwuwymiarowa tablica bitow (k x m+k) -> (4x12)
-    std::vector<std::vector<bool>> H_c4 = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
-        {1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-        {1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0},
-        {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1}
-    };
-
-    std::cout << "wiadomosc oryginal"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-
-
-    //zakodowanie
-    encodeMessage(message, H_c4);
-
-    std::cout << "wiadomosc encoded"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-
-    // wprowadzenie ledu
-    // zamień drugie miejsce w wektorze na 1
-    message[2] = 0;
-    std::cout << "wiadomosc z bledem"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-
+std::vector<bool> singleErrorDetection(std::vector<bool> message, const std::vector<std::vector<bool>>& hammingMatrix) {
 
     // odnajdywanie bledu
     std::vector<bool> error;
-    getErrorVector(message, error, H_c4);
+    getErrorVector(message, error, hammingMatrix);
 
     std::cout << "syndrom bledu"<<std::endl;
     std::cout << vectorToString(error) << std::endl;
 
-    fixError(message, error, H_c4);
+    fixSingleError(message, error, hammingMatrix);
     std::cout << "poprawiona wiadomosc"<<std::endl;
     std::cout << vectorToString(message) << std::endl;
+
+    return error;
 }
 
 /*
@@ -62,8 +38,8 @@ void getErrorVector(const std::vector<bool>& message, std::vector<bool>& error, 
         error.push_back(getParity(message, hammingMatrix, i));
     }
 }
-
-void fixError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix ) {
+*/
+void fixSingleError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix ) {
 
     //zabezpieczenie, ze mnozenie jest mozliwe
     if (message.size() != hammingMatrix[0].size()) {
@@ -87,6 +63,8 @@ void fixError(std::vector<bool>& message, const std::vector<bool>& error, const 
         }
 
     }
+
+
 }
-#1#
-*/
+
+

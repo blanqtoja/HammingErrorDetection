@@ -9,9 +9,9 @@
 #include <iostream>
 #include "../methods.h"
 
-void doubleErrorDetection(std::vector<bool> message);
-void encodeMessage(std::vector<bool>& message, const std::vector<std::vector<bool>>& hammingMatrix);
-void getErrorVector(const std::vector<bool>& message, std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix );
+// void doubleErrorDetection(std::vector<bool> message);
+// void encodeMessage(std::vector<bool>& message, const std::vector<std::vector<bool>>& hammingMatrix);
+// void getErrorVector(const std::vector<bool>& message, std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix );
 void fixDoubleError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix );
 
 

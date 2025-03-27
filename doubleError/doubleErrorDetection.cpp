@@ -4,59 +4,50 @@
 
 #include "doubleErrorDetection.h"
 
-void doubleErrorDetection(std::vector<bool> message) {
+// void doubleErrorDetection(std::vector<bool> message, const std::vector<std::vector<bool>>& hammingMatrix) {
+//
+//     // // https://www.researchgate.net/publication/228819322_A_16_8_error_correcting_code_t_2_for_critical_memory_applications
+//     // std::vector<std::vector<bool>> H ={
+//     //     { 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+//     //     { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+//     //     { 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+//     //     { 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0},
+//     //     { 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0},
+//     //     { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+//     //     { 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0},
+//     //     { 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}
+//     // };
+//
+//     std::cout << "wiadomosc oryginal"<<std::endl;
+//     std::cout << vectorToString(message) << std::endl;
+//
+//
+//     //zakodowanie
+//     encodeMessage(message, hammingMatrix);
+//
+//     std::cout << "wiadomosc encoded"<<std::endl;
+//     std::cout << vectorToString(message) << std::endl;
+//
+//     // wprowadzenie ledu
+//     // zamień drugie miejsce w wektorze na 1
+//     message[2] = 0;
+//     // message[9] = 0;
+//     std::cout << "wiadomosc z bledem"<<std::endl;
+//     std::cout << vectorToString(message) << std::endl;
+//
+//
+//     // odnajdywanie bledu
+//     std::vector<bool> error;
+//     getErrorVector(message, error, hammingMatrix);
+//
+//     std::cout << "syndrom bledu"<<std::endl;
+//     std::cout << vectorToString(error) << std::endl;
+//
+//     fixDoubleError(message, error, hammingMatrix);
+//     std::cout << "poprawiona wiadomosc"<<std::endl;
+//     std::cout << vectorToString(message) << std::endl;
+// }
 
-    // https://www.researchgate.net/publication/228819322_A_16_8_error_correcting_code_t_2_for_critical_memory_applications
-    std::vector<std::vector<bool>> H ={
-        { 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
-        { 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-        { 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-        { 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-        { 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0},
-        { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-        { 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0},
-        { 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}
-    };
-
-    // 0 0   0
-    // 1 1   0
-    // 0 0   0
-    // 1 0   1
-    // 0 0   0
-    // 0 0   0
-    // 1 0   1
-    // 1 0   1
-
-    std::cout << "wiadomosc oryginal"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-
-
-    //zakodowanie
-    encodeMessage(message, H);
-
-    std::cout << "wiadomosc encoded"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-
-    // wprowadzenie ledu
-    // zamień drugie miejsce w wektorze na 1
-    message[2] = 0;
-    // message[9] = 0;
-    std::cout << "wiadomosc z bledem"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-
-
-    // odnajdywanie bledu
-    std::vector<bool> error;
-    getErrorVector(message, error, H);
-
-    std::cout << "syndrom bledu"<<std::endl;
-    std::cout << vectorToString(error) << std::endl;
-
-    fixDoubleError(message, error, H);
-    std::cout << "poprawiona wiadomosc"<<std::endl;
-    std::cout << vectorToString(message) << std::endl;
-}
-// todo: napisac metode ktora sprawdza suma ktrorych dwoch kolumn jest rowna error
 
 /*void fixDoubleError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix ) {
 
@@ -91,7 +82,8 @@ void doubleErrorDetection(std::vector<bool> message) {
 
 
 
-void fixError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix) {
+
+void fixDoubleError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix) {
     // Sprawdzamy, czy rozmiar wiadomości pasuje do macierzy Hamming'a
     if (hammingMatrix.empty() || message.size() != hammingMatrix[0].size()) {
         std::cout << "Error: message size doesn't match hamming matrix size" << std::endl;
@@ -135,8 +127,6 @@ void fixError(std::vector<bool>& message, const std::vector<bool>& error, const 
 
             std::vector<bool> sumV(error.size());
 
-            //test
-            if ( firstCol == 2 && secondCol == 9) {}
 
             // XOR dwóch kolumn
             for (size_t i = 0; i < error.size(); i++) {
