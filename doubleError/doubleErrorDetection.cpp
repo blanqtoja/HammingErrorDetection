@@ -40,7 +40,7 @@ void doubleErrorDetection(std::vector<bool> message) {
     // wprowadzenie ledu
     // zamień drugie miejsce w wektorze na 1
     message[2] = 0;
-    message[9] = 0;
+    // message[9] = 0;
     std::cout << "wiadomosc z bledem"<<std::endl;
     std::cout << vectorToString(message) << std::endl;
 
@@ -91,7 +91,7 @@ void doubleErrorDetection(std::vector<bool> message) {
 
 
 
-void fixDoubleError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix) {
+void fixError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix) {
     // Sprawdzamy, czy rozmiar wiadomości pasuje do macierzy Hamming'a
     if (hammingMatrix.empty() || message.size() != hammingMatrix[0].size()) {
         std::cout << "Error: message size doesn't match hamming matrix size" << std::endl;
@@ -100,6 +100,35 @@ void fixDoubleError(std::vector<bool>& message, const std::vector<bool>& error, 
 
     int numColumns = hammingMatrix[0].size();  // Liczba kolumn macierzy
 
+
+    // pierwszy przypadek -> szukamy, czy mamy do czynienia z pojedynczym bledem
+    //zabezpieczenie, ze mnozenie jest mozliwe
+    if (message.size() != hammingMatrix[0].size()) {
+        std::cout << "Error message size doesn't match hamming matrix size" << std::endl;
+        return;
+    }
+
+    for (int i = 0 ; i<message.size(); i++) {
+        bool errorFound = true;
+        for (int j=0; j<error.size(); j++) {
+            //jesli kolumna rozwni sie czymkolwiek, to przerwij
+            if (error.at(j) != hammingMatrix[j][i] ) {
+                errorFound = false;
+            }
+        }
+
+        if (errorFound) {
+            //odwracamy bledny bit
+            // std::cout << "blad na: " << i<< "bicie"<<std::endl;
+            message.at(i) = !message.at(i);
+            //znaleziony blad, mozemy przerwac
+            return;
+        }
+
+    }
+
+
+    //przechodzimy do szukania dwoch bledow
     // Przeszukujemy wszystkie pary kolumn
     for (int firstCol = 0; firstCol < numColumns; firstCol++) {
         for (int secondCol = firstCol + 1; secondCol < numColumns; secondCol++) {  // secondCol > firstCol, żeby unikać duplikatów
@@ -116,9 +145,9 @@ void fixDoubleError(std::vector<bool>& message, const std::vector<bool>& error, 
 
             // Sprawdzamy, czy suma dwóch kolumn odpowiada wektorowi błędu
             if (sumV == error) {
-                std::cout << "Znaleziono dwie kolumny błędu: " << firstCol << " i " << secondCol << std::endl;
-                std::cout << "Kolumna " << firstCol << std::endl;
-                std::cout << "Kolumna " << secondCol <<  std::endl;
+                // std::cout << "Znaleziono dwie kolumny błędu: " << firstCol << " i " << secondCol << std::endl;
+                // std::cout << "Kolumna " << firstCol << std::endl;
+                // std::cout << "Kolumna " << secondCol <<  std::endl;
 
                 // naprawiamy blad
                 message[firstCol] = !message[firstCol] ;
