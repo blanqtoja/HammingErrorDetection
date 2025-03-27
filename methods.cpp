@@ -20,3 +20,5 @@ std::string vectorToString(const std::vector<bool>& message) {
     }
     return str;
 }
+
+
