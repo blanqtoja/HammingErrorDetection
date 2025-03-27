@@ -3,7 +3,6 @@
 //
 
 #include "singleErrorDetection.h"
-
 #include <iostream>
 
 void singleErrorDetection(std::vector<bool> message) {
@@ -47,6 +46,7 @@ void singleErrorDetection(std::vector<bool> message) {
     std::cout << vectorToString(message) << std::endl;
 }
 
+/*
 //zakodowanie wiadomosci
 void encodeMessage(std::vector<bool>& message, const std::vector<std::vector<bool>>& hammingMatrix) {
 
@@ -87,3 +87,4 @@ void fixError(std::vector<bool>& message, const std::vector<bool>& error, const 
 
     }
 }
+*/

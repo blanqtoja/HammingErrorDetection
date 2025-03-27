@@ -4,16 +4,18 @@
 
 #include "doubleErrorDetection.h"
 
-void singleErrorDetection(std::vector<bool> message) {
-    //korekcja jednego bledu
-    //    2^k >= m+k+1
+void doubleErrorDetection(std::vector<bool> message) {
 
-    // dwuwymiarowa tablica bitow (k x m+k) -> (4x12)
-    std::vector<std::vector<bool>> H_c4 = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
-        {1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-        {1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0},
-        {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1}
+    // https://www.researchgate.net/publication/228819322_A_16_8_error_correcting_code_t_2_for_critical_memory_applications
+    std::vector<std::vector<bool>> H ={
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1},
+        {0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0},
+        {0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0},
+        {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1},
+        {0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1},
+        {0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1},
+        {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0}
     };
 
     std::cout << "wiadomosc oryginal"<<std::endl;
@@ -21,7 +23,7 @@ void singleErrorDetection(std::vector<bool> message) {
 
 
     //zakodowanie
-    encodeMessage(message, H_c4);
+    encodeMessage(message, H);
 
     std::cout << "wiadomosc encoded"<<std::endl;
     std::cout << vectorToString(message) << std::endl;
@@ -29,37 +31,24 @@ void singleErrorDetection(std::vector<bool> message) {
     // wprowadzenie ledu
     // zamień drugie miejsce w wektorze na 1
     message[2] = 0;
+    message[0] = 0;
     std::cout << "wiadomosc z bledem"<<std::endl;
     std::cout << vectorToString(message) << std::endl;
 
 
     // odnajdywanie bledu
     std::vector<bool> error;
-    getErrorVector(message, error, H_c4);
+    getErrorVector(message, error, H);
 
     std::cout << "syndrom bledu"<<std::endl;
     std::cout << vectorToString(error) << std::endl;
 
-    fixError(message, error, H_c4);
+    fixError(message, error, H);
     std::cout << "poprawiona wiadomosc"<<std::endl;
     std::cout << vectorToString(message) << std::endl;
 }
-
-//zakodowanie wiadomosci
-void encodeMessage(std::vector<bool>& message, const std::vector<std::vector<bool>>& hammingMatrix) {
-
-    for (int i=0; i < hammingMatrix.size(); i++) {
-        message.push_back(getParity(message, hammingMatrix, i));
-    }
-}
-
-void getErrorVector(const std::vector<bool>& message, std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix ) {
-
-    for (int i=0; i < hammingMatrix.size(); i++) {
-        error.push_back(getParity(message, hammingMatrix, i));
-    }
-}
-
+// todo: napisac metode ktora sprawdza suma ktrorych dwoch kolumn jest rowna error
+/*
 void fixError(std::vector<bool>& message, const std::vector<bool>& error, const std::vector<std::vector<bool>>& hammingMatrix ) {
 
     //zabezpieczenie, ze mnozenie jest mozliwe
@@ -84,4 +73,4 @@ void fixError(std::vector<bool>& message, const std::vector<bool>& error, const 
         }
 
     }
-}
+}*/
